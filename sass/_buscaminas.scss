@@ -1,0 +1,210 @@
+.page-minesweeper {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background: linear-gradient(180deg, #0b1020, var(--bg));
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.page-minesweeper .app {
+  width: min(980px, 100%);
+  background: rgba(17, 24, 39, 0.9);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.page-minesweeper header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.page-minesweeper header a {
+  color: var(--muted);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+.page-minesweeper header a:hover {
+  border-color: #475569;
+  color: var(--text);
+}
+
+.page-minesweeper h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.page-minesweeper .panel {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 14px;
+}
+
+.page-minesweeper .controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  align-items: end;
+}
+
+.page-minesweeper label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.page-minesweeper input,
+.page-minesweeper select,
+.page-minesweeper button {
+  font: inherit;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #0b1220;
+  color: var(--text);
+  padding: 10px 12px;
+  outline: none;
+}
+
+.page-minesweeper input {
+  width: 120px;
+}
+
+.page-minesweeper select {
+  min-width: 160px;
+}
+
+.page-minesweeper button {
+  cursor: pointer;
+  background: #0b1220;
+  transition: transform 0.05s ease;
+}
+
+.page-minesweeper button:active {
+  transform: translateY(1px);
+}
+
+.page-minesweeper .stats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.page-minesweeper .pill {
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.7);
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.page-minesweeper .pill strong {
+  color: var(--text);
+  font-size: 13px;
+}
+
+.page-minesweeper .msg {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+  min-height: 18px;
+}
+
+.page-minesweeper .msg b {
+  color: var(--text);
+}
+
+.page-minesweeper .boardWrap {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(2, 6, 23, 0.45);
+  overflow: auto;
+}
+
+.page-minesweeper .board {
+  display: grid;
+  gap: 6px;
+  width: max-content;
+  margin: auto;
+}
+
+.page-minesweeper .cell {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid #1f2a3d;
+  background: linear-gradient(180deg, #111827, #0b1220);
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.05s ease,
+    box-shadow 0.15s ease;
+}
+
+.page-minesweeper .cell:hover {
+  background: linear-gradient(180deg, #182234, #10192b);
+  border-color: #2a3a55;
+}
+
+.page-minesweeper .cell:focus {
+  outline: 2px solid #475569;
+  outline-offset: 2px;
+}
+
+.page-minesweeper .cell.revealed {
+  background: linear-gradient(180deg, #314c74, #243b5f);
+  border-color: #4b678f;
+  color: #f8fafc;
+  cursor: default;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.page-minesweeper .cell.revealed:hover {
+  background: linear-gradient(180deg, #314c74, #243b5f);
+  border-color: #4b678f;
+}
+
+.page-minesweeper .cell.mine.revealed {
+  background: linear-gradient(180deg, rgba(239, 68, 68, 0.32), rgba(127, 29, 29, 0.38));
+  border-color: rgba(239, 68, 68, 0.65);
+}
+
+.page-minesweeper .cell.flagged {
+  border-color: rgba(245, 158, 11, 0.7);
+  background: linear-gradient(180deg, #1a2130, #101726);
+}
+
+.page-minesweeper .legend {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
