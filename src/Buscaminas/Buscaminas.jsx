@@ -141,6 +141,24 @@ function Buscaminas() {
 
   const [game, setGame] = useState(null);
 
+  let statusMessage = "";
+
+  if (!game) {
+    statusMessage = "Pulsa Crear / Reiniciar para empezar.";
+  }
+
+  if (game?.status === "playing") {
+    statusMessage = "Partida en curso.";
+  }
+
+  if (game?.status === "won") {
+    statusMessage = "🎉 Has ganado";
+  }
+
+  if (game?.status === "lost") {
+    statusMessage = "💣 Has encontrado una mina";
+  }
+
   function newGame() {
     let g = createGame(rows, cols, mines);
     setGame(g);
@@ -203,13 +221,9 @@ function Buscaminas() {
         />
       </div>
 
-      {game?.status === "won" && (
-        <p className="message win">🎉 Has ganado</p>
-      )}
-
-      {game?.status === "lost" && (
-        <p className="message lost">💣 Has encontrado una mina</p>
-      )}
+      <p className={`message ${game?.status || "start"}`}>
+        {statusMessage}
+      </p>
 
       <div className="boardWrap">
         <Board
