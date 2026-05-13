@@ -16,10 +16,10 @@ function Cell({ cell, onLeftClick, onRightClick }) {
   return (
     <button
       type="button"
-      className={`cell 
-        ${cell.revealed ? "revealed" : ""} 
-        ${cell.flagged ? "flagged" : ""} 
-        ${cell.mine ? "mine" : ""}
+      className={`cell
+        ${cell.revealed ? "revealed" : ""}
+        ${cell.flagged ? "flagged" : ""}
+        ${cell.revealed && cell.mine ? "mine" : ""}
       `}
       onClick={() => onLeftClick(cell.r, cell.c)}
       onContextMenu={(e) => {

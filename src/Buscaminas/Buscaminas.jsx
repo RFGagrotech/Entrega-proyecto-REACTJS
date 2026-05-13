@@ -44,7 +44,7 @@ function createGame(rows, cols, mines) {
     cols,
     mines,
     grid,
-    ended: false,
+    status: "playing",
   };
 }
 
@@ -56,7 +56,7 @@ function revealCell(game, r, c) {
 
   if (startCell.mine) {
     startCell.revealed = true;
-    newGame.ended = true;
+    newGame.status = "lost";
     return newGame;
   }
 
@@ -80,14 +80,24 @@ function revealCell(game, r, c) {
     );
 
     neighbors.forEach((neighbor) => {
-      if (
-        !neighbor.revealed &&
-        !neighbor.flagged &&
-        !neighbor.mine
-      ) {
+      if (!neighbor.revealed && !neighbor.flagged && !neighbor.mine) {
         stack.push(neighbor);
       }
     });
+  }
+
+  let revealedSafeCells = 0;
+
+  newGame.grid.forEach((row) => {
+    row.forEach((cell) => {
+      if (cell.revealed && !cell.mine) {
+        revealedSafeCells++;
+      }
+    });
+  });
+
+  if (revealedSafeCells === newGame.rows * newGame.cols - newGame.mines) {
+    newGame.status = "won";
   }
 
   return newGame;
@@ -137,14 +147,14 @@ function Buscaminas() {
   }
 
   function handleLeftClick(r, c) {
-    if (!game || game.ended) return;
+    if (!game || game.status !== "playing") return;
 
     let updatedGame = revealCell(game, r, c);
     setGame(updatedGame);
   }
 
   function handleRightClick(r, c) {
-    if (!game || game.ended) return;
+    if (!game || game.status !== "playing") return;
 
     let updatedGame = toggleFlag(game, r, c);
     setGame(updatedGame);
@@ -192,6 +202,14 @@ function Buscaminas() {
           onNewGame={newGame}
         />
       </div>
+
+      {game?.status === "won" && (
+        <p className="message win">🎉 Has ganado</p>
+      )}
+
+      {game?.status === "lost" && (
+        <p className="message lost">💣 Has encontrado una mina</p>
+      )}
 
       <div className="boardWrap">
         <Board
