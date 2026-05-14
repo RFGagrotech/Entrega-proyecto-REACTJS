@@ -45,7 +45,27 @@ function createGame(rows, cols, mines) {
     mines,
     grid,
     status: "playing",
+    message: "Partida en curso.",
   };
+}
+
+function getNeighbors(grid, rows, cols, r, c) {
+  let neighbors = [];
+
+  for (let dr = -1; dr <= 1; dr++) {
+    for (let dc = -1; dc <= 1; dc++) {
+      if (dr === 0 && dc === 0) continue;
+
+      let nr = r + dr;
+      let nc = c + dc;
+
+      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+        neighbors.push(grid[nr][nc]);
+      }
+    }
+  }
+
+  return neighbors;
 }
 
 function revealCell(game, r, c) {
@@ -57,6 +77,17 @@ function revealCell(game, r, c) {
   if (startCell.mine) {
     startCell.revealed = true;
     newGame.status = "lost";
+    newGame.message = "💣 Has perdido";
+
+    // Mostrar todas las minas al perder
+    newGame.grid.forEach((row) => {
+      row.forEach((cell) => {
+        if (cell.mine) {
+          cell.revealed = true;
+        }
+      });
+    });
+
     return newGame;
   }
 
@@ -98,28 +129,10 @@ function revealCell(game, r, c) {
 
   if (revealedSafeCells === newGame.rows * newGame.cols - newGame.mines) {
     newGame.status = "won";
+    newGame.message = "🎉 Has ganado";
   }
 
   return newGame;
-}
-
-function getNeighbors(grid, rows, cols, r, c) {
-  let neighbors = [];
-
-  for (let dr = -1; dr <= 1; dr++) {
-    for (let dc = -1; dc <= 1; dc++) {
-      if (dr === 0 && dc === 0) continue;
-
-      let nr = r + dr;
-      let nc = c + dc;
-
-      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
-        neighbors.push(grid[nr][nc]);
-      }
-    }
-  }
-
-  return neighbors;
 }
 
 function toggleFlag(game, r, c) {
@@ -138,29 +151,13 @@ function Buscaminas() {
   const [cols, setCols] = useState(8);
   const [mines, setMines] = useState(10);
   const [difficulty, setDifficulty] = useState("easy");
-
   const [game, setGame] = useState(null);
 
-  let statusMessage = "";
-
-  if (!game) {
-    statusMessage = "Pulsa Crear / Reiniciar para empezar.";
-  }
-
-  if (game?.status === "playing") {
-    statusMessage = "Partida en curso.";
-  }
-
-  if (game?.status === "won") {
-    statusMessage = "🎉 Has ganado";
-  }
-
-  if (game?.status === "lost") {
-    statusMessage = "💣 Has encontrado una mina";
-  }
-
   function newGame() {
-    let g = createGame(rows, cols, mines);
+    let totalCells = rows * cols;
+    let validMines = Math.min(mines, totalCells - 1);
+
+    let g = createGame(rows, cols, validMines);
     setGame(g);
   }
 
@@ -214,23 +211,32 @@ function Buscaminas() {
           cols={cols}
           mines={mines}
           onDifficultyChange={handleDifficultyChange}
-          onRowsChange={(e) => setRows(Number(e.target.value))}
-          onColsChange={(e) => setCols(Number(e.target.value))}
-          onMinesChange={(e) => setMines(Number(e.target.value))}
+          onRowsChange={(e) => {
+            setRows(Number(e.target.value));
+            setDifficulty("custom");
+          }}
+          onColsChange={(e) => {
+            setCols(Number(e.target.value));
+            setDifficulty("custom");
+          }}
+          onMinesChange={(e) => {
+            setMines(Number(e.target.value));
+            setDifficulty("custom");
+          }}
           onNewGame={newGame}
         />
-      </div>
 
-      <p className={`message ${game?.status || "start"}`}>
-        {statusMessage}
-      </p>
+        <p className={`message ${game?.status || "start"}`}>
+          {game ? game.message : "Pulsa Crear / Reiniciar para empezar."}
+        </p>
 
-      <div className="boardWrap">
-        <Board
-          game={game}
-          onLeftClick={handleLeftClick}
-          onRightClick={handleRightClick}
-        />
+        <div className="boardWrap">
+          <Board
+            game={game}
+            onLeftClick={handleLeftClick}
+            onRightClick={handleRightClick}
+          />
+        </div>
       </div>
     </section>
   );

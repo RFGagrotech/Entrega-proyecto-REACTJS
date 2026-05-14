@@ -34,3 +34,27 @@
 .index-list a:hover {
   text-decoration: underline;
 }
+
+//Parte de mensaje
+.message {
+  margin: 12px 0;
+  font-weight: 700;
+}
+
+.message.playing {
+  color: #93c5fd;
+}
+
+.message.won {
+  color: #22c55e;
+}
+
+.message.lost {
+  color: #ef4444;
+}
+
+.message.start {
+  color: #cbd5e1;
+}
+
+
