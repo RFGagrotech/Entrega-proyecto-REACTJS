@@ -46,6 +46,27 @@
   text-decoration: underline;
 }
 
+.message {
+  margin: 12px 0;
+  font-weight: 700;
+}
+
+.message.playing {
+  color: #93c5fd;
+}
+
+.message.won {
+  color: #22c55e;
+}
+
+.message.lost {
+  color: #ef4444;
+}
+
+.message.start {
+  color: #cbd5e1;
+}
+
 .page-minesweeper {
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
